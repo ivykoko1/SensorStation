@@ -7,6 +7,8 @@
 #define LOWER_BOUND 1850
 #define UPPER_BOUND 2175
 
+#define DEBUGMAPPING TRUE
+
 class TemperatureGraph
 {
 private:
@@ -22,7 +24,8 @@ private:
     bool isGraphTempUpdated = false;
 
     void shiftArray();
-
+    void displayInfo(Adafruit_SSD1306 *display, bool force = false);
+    void printArrayToSerial(uint8_t* array, uint8_t arrsize);
     typedef struct
     {
         uint16_t lower_bound;
@@ -31,7 +34,6 @@ private:
 
 public:
     TemperatureGraph(uint16_t lower_bound = LOWER_BOUND, uint16_t upper_bound = UPPER_BOUND);
-    TemperatureGraph();
     ~TemperatureGraph();
     void drawGraph(Adafruit_SSD1306 *display);
     float addTemperature(float temp);

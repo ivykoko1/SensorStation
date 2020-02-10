@@ -9,6 +9,8 @@
 
 #define SCREEN_WIDTH 128 
 #define SCREEN_HEIGHT 32 
+
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire);
 SensorsManager sensors(22, 23);
 TemperatureGraph* graph;
@@ -38,10 +40,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(350);
+  delay(250);
+  
   float temp = sensors.getTemperature();
   graph->addTemperature(temp);
   graph->drawGraph(&display);
-  
+
 }
   
