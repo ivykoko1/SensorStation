@@ -1,10 +1,8 @@
 #include "SensorsManager.h"
 
-#define DEBUG
-
- DHT_Unified* dht;
- OneWire* oneWire;
- DallasTemperature* dallasTemperature;
+DHT_Unified* dht;
+OneWire* oneWire;
+DallasTemperature* dallasTemperature;
 
 SensorsManager::SensorsManager(uint8_t DHT_PIN, uint8_t DS18B20_PIN)
 {

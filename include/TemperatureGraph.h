@@ -7,8 +7,7 @@
 #define LOWER_BOUND 1850
 #define UPPER_BOUND 2175
 
-#define DEBUGMAPPING TRUE
-
+//#define DEBUG /*enables debug*/
 class TemperatureGraph
 {
 private:
@@ -25,7 +24,6 @@ private:
 
     void shiftArray();
     void displayInfo(Adafruit_SSD1306 *display, bool force = false);
-    void printArrayToSerial(uint8_t* array, uint8_t arrsize);
     typedef struct
     {
         uint16_t lower_bound;

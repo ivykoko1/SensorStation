@@ -37,12 +37,12 @@ void TemperatureGraph::drawGraph(Adafruit_SSD1306 *display)
     if (lastIndex < 127)
     {
         display->drawPixel(lastIndex - 1, points[lastIndex - 1], SSD1306_WHITE);
-#ifdef DEBUG
-        Serial.print(F("Drawing pixel at x: "));
-        Serial.print(lastIndex - 1);
-        Serial.print(F(", y: "));
-        Serial.println(points[lastIndex - 1]);
-#endif // DEBUG
+        #ifdef DEBUG
+            Serial.print(F("Drawing pixel at x: "));
+            Serial.print(lastIndex - 1);
+            Serial.print(F(", y: "));
+            Serial.println(points[lastIndex - 1]);
+        #endif 
         displayInfo(display);
     }
     else
@@ -65,18 +65,18 @@ void TemperatureGraph::displayInfo(Adafruit_SSD1306 *display, bool force)
 {
     if (!isGraphTempUpdated || force)
     {
-#ifdef DEBUG
-        Serial.print(F("Updating text, forced: "));
-        Serial.print(force);
-        Serial.print(F(", text set to: "));
-        Serial.print(lastTemperature);
-        Serial.println(F("C."));
-#endif // DEBUG
+        #ifdef DEBUG
+            Serial.print(F("Updating text, forced: "));
+            Serial.print(force);
+            Serial.print(F(", text set to: "));
+            Serial.print(lastTemperature);
+            Serial.println(F("C."));
+        #endif 
         display->fillRect(89, 25, 37, 7, SSD1306_BLACK);
         display->setCursor(89, 25);
         display->setTextColor(WHITE);
         display->print(lastTemperature);
-        display->print("C");
+        display->println("C");
     }
 }
 //todo check for min and max temps when adding.
@@ -93,49 +93,40 @@ float TemperatureGraph::addTemperature(float temp)
         isGraphTempUpdated = false;
     }
     uint8_t coord = map(integerTemp, lowerBound, upperBound, 32, 0);
-#ifdef DEBUGMAPPING || DEBUG
-    Serial.print(F("Mapped "));
-    Serial.print(integerTemp);
-    Serial.print(F(" (x100C) to y: "));
-    Serial.println(coord);
-#endif // DEBUG
+
+    #ifdef DEBUG
+        Serial.print(F("Mapped "));
+        Serial.print(integerTemp);
+        Serial.print(F(" (x100C) to y: "));
+        Serial.println(coord);
+    #endif 
 
     if (lastIndex == 127)
     {   
         shiftArray();
         points[127] = coord;
-#ifdef DEBUG
-        Serial.print(F("Adding y: "));
-        Serial.print(coord);
-        Serial.print(F(" in index: "));
-        Serial.println(lastIndex);
-#endif // DEBUG
+        #ifdef DEBUG
+            Serial.print(F("Adding y: "));
+            Serial.print(coord);
+            Serial.print(F(" in index: "));
+            Serial.println(lastIndex);
+        #endif 
     }
     else
     {
         points[lastIndex] = coord;
-#ifdef DEBUG
-        Serial.print(F("Adding "));
-        Serial.print(coord);
-        Serial.print(F(" in index: "));
-        Serial.println(lastIndex);
-#endif // DEBUG
+        #ifdef DEBUG
+            Serial.print(F("Adding "));
+            Serial.print(coord);
+            Serial.print(F(" in index: "));
+            Serial.println(lastIndex);
+        #endif 
         lastIndex++;
     }
     lastTemperature = temp;
     return temp;
 }
 
-void TemperatureGraph::printArrayToSerial(uint8_t* array, uint8_t arrsize){
-    for (uint8_t i = 0; i < arrsize; i++)
-    {
-        Serial.print(F("Index "));
-        Serial.print(i);
-        Serial.print(F(" value: "));
-        Serial.println(array[i]);
-    }
-    
-}
 
 TemperatureGraph::~TemperatureGraph()
 {
