@@ -40,7 +40,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(250);
+  delay(300);
   
   float temp = sensors.getTemperature();
   graph->addTemperature(temp);

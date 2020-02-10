@@ -61,9 +61,11 @@ void TemperatureGraph::drawGraph(Adafruit_SSD1306 *display)
     display->display();
 }
 
+
+
 void TemperatureGraph::displayInfo(Adafruit_SSD1306 *display, bool force)
 {
-    if (!isGraphTempUpdated || force)
+    if (!isGraphTempUpdated || force || lastIndex <= 1)
     {
         #ifdef DEBUG
             Serial.print(F("Updating text, forced: "));
@@ -84,6 +86,13 @@ void TemperatureGraph::displayInfo(Adafruit_SSD1306 *display, bool force)
 float TemperatureGraph::addTemperature(float temp)
 {
     uint16_t integerTemp = (uint16_t)(temp * 100);
+    uint8_t newTempRatio = integerTemp / lastTemperature;
+    if(newTempRatio >= DISCARD_THRESOLD_RATIO) temp = lastTemperature; //Discard wrong value
+    #ifdef DEBUG
+        Serial.print(F("New temp %: "));
+        Serial.print(newTempRatio);
+        Serial.println(F(" %."));
+    #endif // DEBUG
     if (temp == lastTemperature)
     {
         isGraphTempUpdated = true;

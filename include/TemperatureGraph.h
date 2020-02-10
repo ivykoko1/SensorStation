@@ -4,8 +4,13 @@
 #include <Arduino.h>
 #include <Adafruit_SSD1306.h>
 
-#define LOWER_BOUND 1850
-#define UPPER_BOUND 2175
+#define LOWER_BOUND 1875
+#define UPPER_BOUND 2150
+/* Percentage for discarding next reading i.e.:
+ if new registered temperature / previous temperature  * 100 > DISCARD_THRESOLD then
+ the newly listed temperature won't be registered and instead the previous will be used  */
+#define DISCARD_THRESOLD_RATIO 120
+#define MAX_BOUNDS_CHANGE 105
 
 //#define DEBUG /*enables debug*/
 class TemperatureGraph
@@ -24,20 +29,16 @@ private:
 
     void shiftArray();
     void displayInfo(Adafruit_SSD1306 *display, bool force = false);
-    typedef struct
-    {
-        uint16_t lower_bound;
-        uint16_t upper_bound;
-    } boundsTuple;
-
+    void updateBounds(uint16_t newLower, uint16_t newUpper);
+    
 public:
     TemperatureGraph(uint16_t lower_bound = LOWER_BOUND, uint16_t upper_bound = UPPER_BOUND);
     ~TemperatureGraph();
     void drawGraph(Adafruit_SSD1306 *display);
     float addTemperature(float temp);
     void reset();
-    boundsTuple getGraphBounds();
-    boundsTuple setGraphBounds();
+    //struct boundsTuple getGraphBounds();
+    //struct boundsTuple setGraphBounds();
 };
 
 #endif // !#TEMPGRAPH_H
