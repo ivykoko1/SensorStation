@@ -24,6 +24,7 @@ void setup() {
     for(;;); // Don't proceed, loop forever
   }
   sensors.begin();
+  sensors.setResolution(13);
   graph = new TemperatureGraph();
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
@@ -40,9 +41,15 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(300);
+  delay(2000);
   
   float temp = sensors.getTemperature();
+  #ifdef DEBUG
+    Serial.print("------------------");
+    Serial.print(temp);
+    Serial.println("------------------");
+  #endif // DEBUG
+
   graph->addTemperature(temp);
   graph->drawGraph(&display);
 
